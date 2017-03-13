@@ -7,11 +7,15 @@ import com.mark.java.entity.Membership;
  */
 public interface MembershipDAO {
 
-    public Membership create(String identity);
+    public Membership create(String cellphone, String password);
 
-    public Membership findByMemberId(int memberId);
+    public Membership findById(int id);
 
-    public Membership findByIdentity(String identity);
+    public Membership findByMemberCode(int memberCode);
+
+    public Membership findByCellphone(String cellphone);
 
     public Membership update(Membership membership);
+
+    public boolean ifMemberExists(String cellphone);
 }

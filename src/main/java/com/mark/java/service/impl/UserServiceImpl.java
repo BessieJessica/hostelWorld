@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by lois on 2017/3/6.
  */
 
-@Service("userService")
+@Service
 @Transactional //指明每个方法是一个事务
 
 public class UserServiceImpl implements UserService {
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDao;
 
     public Map<String, Object> login(String username, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         username = username.trim();
         password = password.trim();
 

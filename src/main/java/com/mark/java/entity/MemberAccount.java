@@ -14,14 +14,11 @@ import javax.persistence.Table;
 public class MemberAccount {
 
     private int memberId;
-
     private int bankId;
-
     private double balance;
-
     private int credit;
-
     private VipLevel vipLevel;
+
 
     @Id
     public int getMemberId(){return memberId;}

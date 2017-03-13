@@ -1,7 +1,6 @@
 package com.mark.java.entity;
 
 import javax.persistence.*;
-import java.security.Timestamp;
 
 /**
  * Created by lois on 2017/3/12.
@@ -12,11 +11,14 @@ import java.security.Timestamp;
 
 public class Membership {
     private int id;
-    private int memberId; //会员卡号
+    private int memberCode; //会员卡号
     private String cellphone;
     private String password;
-    int state;
+    private int state;//0:未激活；1：激活
 //    String name;
+    private MemberState memberState;
+    private MemberAccount memberAccount;
+    private MemberInfo memberInfo;
 
     @Id
     @Column(name = "id")
@@ -24,8 +26,8 @@ public class Membership {
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
 
-    public int getMemberId(){return memberId;}
-    public void setMemberId(int memberId){this.memberId = memberId;}
+    public int getMemberCode(){return memberCode;}
+    public void setMemberCode(int memberCode){this.memberCode = memberCode;}
 
     public String getCellphone(){return cellphone;}
     public void setCellphone(String cellphone){this.cellphone = cellphone;}
@@ -35,6 +37,22 @@ public class Membership {
 
     public int getState(){return state;}
     public void setState(int state){this.state = state;}
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public MemberAccount getMemberAccount(){return memberAccount;}
+    public void setMemberAccount(MemberAccount memberAccount){this.memberAccount = memberAccount;}
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public MemberState getMemberState(){return memberState;}
+    public void setMemberState(MemberState memberState){this.memberState = memberState;}
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public MemberInfo getMemberInfo(){return memberInfo;}
+    public void setMemberInfo(MemberInfo memberInfo){this.memberInfo = memberInfo;}
 
 //    public String getName(){return name;}
 //    public void setName(String name){this.name = name;}
