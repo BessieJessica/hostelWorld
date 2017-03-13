@@ -11,6 +11,8 @@ import java.util.Map;
 public interface UserService {
     public Map<String, Object> login(String username, String password);
 
-    public void saveUsers(List<User> users);
-    public List<User> getAllUsernames();
+//    public void saveUsers(List<User> users);
+
+    public List<User> getAllUsers();
+
 }

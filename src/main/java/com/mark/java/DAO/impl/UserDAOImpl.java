@@ -1,6 +1,7 @@
 package com.mark.java.DAO.impl;
 
 import com.mark.java.DAO.UserDAO;
+import com.mark.java.entity.Hotel;
 import com.mark.java.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -28,27 +29,22 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public User create(String username, String password, String cellphone, String identity) {
+    public User create(String username, String password, int role, int hotelId) {
         Session session = sessionFactory.getCurrentSession();
 
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-
-
-        /**
-         * TODO
-         */
-
-
-
+        user.setRole(role);
+        Hotel tmpHotel = new Hotel();
+        tmpHotel.setHotelId(hotelId);
+        if(role==4){
+            user.setHotel(null);
+        }else{
+            user.setHotel(tmpHotel);
+        }
+        session.save(user);
         return user;
-
-    }
-
-
-    public int save(User u){
-        return (Integer) sessionFactory.getCurrentSession().save(u);
     }
 
     public List<User> findAll(){
@@ -60,6 +56,23 @@ public class UserDAOImpl implements UserDAO {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from User where username =: username");
         query.setString("username",username);
+        if (query.list()==null||query.list().size()==0){
+            return null;
+        }else{
+            return (User)query.list().get(0);
+        }
+    }
+
+    public User update(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        session.save(user);
+        return user;
+    }
+
+    public User findById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where id =: id");
+        query.setInteger("id",id);
         if (query.list()==null||query.list().size()==0){
             return null;
         }else{

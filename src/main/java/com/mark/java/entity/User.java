@@ -21,7 +21,7 @@ public class User implements Serializable{
 
     private String password;
 
-    private int role; //前台，店长，经理
+    private int role; //前台，店长，经理:4
 
     private Hotel hotel;
 

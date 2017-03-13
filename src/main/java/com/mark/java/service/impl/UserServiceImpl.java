@@ -53,13 +53,14 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
-    public void saveUsers(List<User> users){
-        for (User u: users){
-            userDao.save(u);
-        }
-    }
+//    public void saveUsers(List<User> users){
+//        for (User u: users){
+//            userDao.save(u);
+//        }
+//    }
 
-    public List<User> getAllUsernames() {
+    public List<User> getAllUsers() {
+
         return userDao.findAll();
     }
 }
