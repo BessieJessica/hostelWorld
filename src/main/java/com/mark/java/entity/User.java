@@ -23,8 +23,6 @@ public class User implements Serializable{
 
     private int role; //前台，店长，经理
 
-    private int hotelId;
-
     private Hotel hotel;
 
 
@@ -56,6 +54,7 @@ public class User implements Serializable{
 
 
     public Hotel getHotel() {return hotel;}
+    public void setHotel(Hotel hotel){this.hotel = hotel;}
 
 
 

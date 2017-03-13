@@ -15,6 +15,8 @@ public interface UserDAO {
 
     public User findByUsername(String username);
 
+    public User update(User user);
+
 
 
     /**
