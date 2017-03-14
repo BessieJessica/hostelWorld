@@ -1,9 +1,6 @@
 package com.mark.java.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -22,6 +19,8 @@ public class Credit {
     private int credit;
     private Timestamp time;
 
+    private Consumption consumption;
+
     @Id
     @GeneratedValue
     public int getId(){return id;}
@@ -38,4 +37,9 @@ public class Credit {
 
     public Timestamp getTime(){return time;}
     public void setTime(Timestamp time){this.time = time;}
+
+    @OneToOne
+    @JoinColumn(name = "consumptionId")
+    public Consumption getConsumption(){return consumption;}
+    public void setConsumption(Consumption consumption){this.consumption = consumption;}
 }
