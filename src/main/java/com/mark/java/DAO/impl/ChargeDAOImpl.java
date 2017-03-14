@@ -39,7 +39,7 @@ public class ChargeDAOImpl implements ChargeDAO{
     public List<Charge> findByMemberId(int id) {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("from Charge where memberId =: id order by time desc ");
+        Query query = session.createQuery("from charge where memberId =: id order by time desc ");
         query.setInteger("id",id);
         return query.list();
     }

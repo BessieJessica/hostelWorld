@@ -87,7 +87,7 @@ public class MembershipDAOImpl implements MembershipDAO {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("from member where memberId =: memberId");
-        query.setInteger("memberId", memberCode);
+        query.setInteger("memberCode", memberCode);
         if (query.list()==null||query.list().size()==0){
             return null;
         }else{

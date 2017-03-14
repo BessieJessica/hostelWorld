@@ -37,7 +37,7 @@ public class UserDAOImpl implements UserDAO {
         user.setPassword(password);
         user.setRole(role);
         Hotel tmpHotel = new Hotel();
-        tmpHotel.setHotelId(hotelId);
+        tmpHotel.setHotelCode(hotelId);
         if(role==4){
             user.setHotel(null);
         }else{
