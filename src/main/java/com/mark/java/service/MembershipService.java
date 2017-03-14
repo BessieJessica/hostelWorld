@@ -36,13 +36,6 @@ public interface MembershipService {
 
     /**
      *
-     public Map<String, Object> supplyInfo(int id, String name, String birthday, int gender,
-     String province, String city, String bank);
-
-     public Map<String, Object> editInfo(int id, String name, String birthday, int gender,
-     String province, String city);
-
-     public Map<String, Object> exchangePoint(int id, int point);
 
      ----------------------------------------------------------------
      public List<Point> getPointsByCustomer(int id);

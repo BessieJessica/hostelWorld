@@ -4,6 +4,8 @@ package com.mark.java.service.impl;
  * Created by lois on 2017/3/13.
  */
 
+import com.mark.java.DAO.ChargeDAO;
+import com.mark.java.DAO.CreditDAO;
 import com.mark.java.DAO.MembershipDAO;
 import com.mark.java.entity.Membership;
 import com.mark.java.entity.VipLevel;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +26,10 @@ public class MembershipServiceImpl implements MembershipService{
 
     @Autowired
     private MembershipDAO membershipDAO;
+    @Autowired
+    private CreditDAO creditDAO;
+    @Autowired
+    private ChargeDAO chargeDAO;
 
 
     @Override
@@ -206,44 +213,158 @@ public class MembershipServiceImpl implements MembershipService{
 
         membershipDAO.update(membership);
 
+        //积分记录
+        creditDAO.create(id,credit,1,null);
 
+        map.put("success",true);
+        map.put("credit",membership.getMemberAccount().getCredit());
 
-
-        return null;
+        return map;
     }
 
     @Override
     public Map<String, Object> recharge(int id, int money, String password) {
-        return null;
+        Map<String,Object> map = new HashMap<>();
+
+        if (money<100) {
+            map.put("success",false);
+            map.put("error","充值金额不足100元！");
+            return map;
+        }
+
+        Membership membership = membershipDAO.findById(id);
+        if(!password.equals(membership.getPassword())){
+            map.put("success",false);
+            map.put("error","密码输入有误～");
+            return map;
+        }
+
+        double afterBalance = membership.getMemberAccount().getBalance()+money;
+        membership.getMemberAccount().setBalance(afterBalance);
+        membership.setState(1);
+
+        Timestamp startTime = new Timestamp(System.currentTimeMillis());
+        membership.getMemberState().setStartTime(startTime);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.YEAR,1);
+        Timestamp pauseTime = new Timestamp(calendar.getTime().getTime());
+        membership.getMemberState().setPauseTime(pauseTime);
+
+        calendar.add(Calendar.YEAR,1);
+        Timestamp stopTime = new Timestamp(calendar.getTime().getTime());
+        membership.getMemberState().setStopTime(stopTime);
+
+        VipLevel vipLevel = new VipLevel();
+        int level = money/1000;
+        if(membership.getMemberAccount().getVipLevel().getLevel()<level){
+            vipLevel.setLevel(level);
+            membership.getMemberAccount().setVipLevel(vipLevel);
+        }
+
+        membershipDAO.update(membership);
+        chargeDAO.create(id, money);
+        map.put("success",true);
+
+        return map;
     }
 
     @Override
     public Map<String, Object> stop(int id) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+
+        Membership membership = membershipDAO.findById(id);
+        membership.setState(3);
+
+        membershipDAO.update(membership);
+        map.put("success",true);
+        return map;
     }
 
     @Override
     public Map<String, Object> fillInfo(int id, String name) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+
+        name = name.trim();
+
+        if(name.length()==0){
+            map.put("success",false);
+            map.put("error","信息不完整！");
+            return map;
+        }
+
+        Membership membership = membershipDAO.findById(id);
+        membership.getMemberInfo().setName(name);
+        membershipDAO.update(membership);
+        map.put("success",true);
+        map.put("memberName",membership.getMemberInfo().getName());
+        
+        return map;
     }
 
     @Override
     public Map<String, Object> editInfo(int id, String name) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        Membership membership = membershipDAO.findById(id);
+        membership.getMemberInfo().setName(name);
+        membershipDAO.update(membership);
+        map.put("success",true);
+
+        return map;
     }
 
     @Override
     public void stateRecheck(int id) {
+        Membership membership = membershipDAO.findById(id);
+
+        if(membership.getState()==3){
+            return;
+        }
+        if (membership.getState()==0&&membership.getMemberState().getPauseTime()==null){
+            return;
+        }
+
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        Timestamp pauseTime = membership.getMemberState().getPauseTime();
+        Timestamp stopTime = membership.getMemberState().getStopTime();
+
+        Calendar calendar = Calendar.getInstance();
+
+        if(stopTime == null){
+            calendar.setTime(new Date(stopTime.getTime()));
+            calendar.add(Calendar.YEAR,1);
+            membership.getMemberState().setStopTime(new Timestamp(calendar.getTime().getTime()));
+            stopTime = membership.getMemberState().getStopTime();
+        }
+
+        if(membership.getMemberAccount().getBalance()<100
+                && currentTime.compareTo(pauseTime)>0){
+            membership.setState(2);
+            calendar.setTime(new Date(pauseTime.getTime()));
+            calendar.add(Calendar.YEAR,1);
+            membership.getMemberState().setStopTime(new Timestamp(calendar.getTime().getTime()));
+        }else if(currentTime.compareTo(pauseTime)<0){
+            membership.setState(1);
+        }
+
+        if(currentTime.compareTo(stopTime) > 0){
+            membership.setState(3);
+        }
+
+        membershipDAO.update(membership);
 
     }
 
     @Override
     public Membership getMemberById(int id) {
+
         return membershipDAO.findById(id);
     }
 
     @Override
     public Membership getMembershipByMemberCode(int memberCode) {
+
         return membershipDAO.findByMemberCode(memberCode);
     }
 

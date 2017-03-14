@@ -14,7 +14,7 @@ public class Membership {
     private int memberCode; //会员卡号
     private String cellphone;
     private String password;
-    private int state;//0:未激活；1：激活
+    private int state;//0:未激活；1：可使用；2:暂停; 3:停止
 //    String name;
     private MemberState memberState;
     private MemberAccount memberAccount;

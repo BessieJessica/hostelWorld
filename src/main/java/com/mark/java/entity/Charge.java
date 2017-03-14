@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  * Created by lois on 2017/3/13.
  *
  * 用户账单
+ * 记录充值信息
  */
 
 @Entity

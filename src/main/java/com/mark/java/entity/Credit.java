@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class Credit {
     private int id;
     private int memberId;
-    private int type;
+    private int type; //1:兑换积分
     private int credit;
     private Timestamp time;
 
