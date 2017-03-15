@@ -299,7 +299,7 @@ public class MembershipServiceImpl implements MembershipService{
         membershipDAO.update(membership);
         map.put("success",true);
         map.put("memberName",membership.getMemberInfo().getName());
-        
+
         return map;
     }
 

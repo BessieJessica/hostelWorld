@@ -35,13 +35,13 @@ public class MainController {
 
         User u = new User();
         u.setUsername("Jessi");
-        u.setCellphone("13382513985");
+//        u.setCellphone("13382513985");
         u.setPassword("12345");
         users.add(u);
         u = new User();
         u.setUsername("Liu");
         users.add(u);
-        userService.saveUsers(users);
+//        userService.saveUsers(users);
         return "index";
     }
 
@@ -49,7 +49,7 @@ public class MainController {
 
     @ResponseBody
     public List<User> json(){
-        return userService.getAllUsernames();
+        return userService.getAllUsers();
     }
 }
 

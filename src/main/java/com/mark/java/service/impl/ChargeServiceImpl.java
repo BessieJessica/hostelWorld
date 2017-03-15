@@ -19,7 +19,7 @@ public class ChargeServiceImpl implements ChargeService{
     private ChargeDAO chargeDAO;
 
     @Override
-    public List<Charge> getChargeByMember(int id) {
+    public List<Charge> getChargeByMemberId(int id) {
 
         return chargeDAO.findByMemberId(id);
     }

@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ChargeService {
 
-    public List<Charge> getChargeByMember(int id);
+    public List<Charge> getChargeByMemberId(int id);
 
 }
