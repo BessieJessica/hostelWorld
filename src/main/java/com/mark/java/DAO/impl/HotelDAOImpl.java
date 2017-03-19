@@ -23,7 +23,7 @@ public class HotelDAOImpl implements HotelDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public Hotel create(String description, String city) {
+    public Hotel create(String name, String password) {
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -43,8 +43,8 @@ public class HotelDAOImpl implements HotelDAO {
 
         Hotel hotel = new Hotel();
         hotel.setHotelCode(hotelCode);
-        hotel.setCity(city);
-        hotel.setDescription(description);
+        hotel.setName(name);
+        hotel.setPassword(password);
         hotel.setState(0);//注册客栈，状态设为0
         session.save(hotel);
 

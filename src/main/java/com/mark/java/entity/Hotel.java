@@ -18,15 +18,12 @@ import java.util.Set;
 public class Hotel {
 
     private int id;
-
     private int hotelCode; //通过注册随机生成7位数
-
-    private String city;
-
-    private String description;
-
+    private String name;
+    private String password;
     private int state; //初始注册状态0／待审批1／通过2／拒绝3
 
+    private HotelInfo hotelInfo;
     private Set<User> users;
     private Set<Room> rooms;
 
@@ -40,16 +37,6 @@ public class Hotel {
     @Column(name = "hotelCode")
     public int getHotelCode(){return hotelCode;}
     public void setHotelCode(int hotelCode){this.hotelCode = hotelCode;}
-
-    @Basic
-    @Column(name = "city")
-    public String getCity(){return city;}
-    public void setCity(String city){this.city = city;}
-
-    @Basic
-    @Column(name = "description")
-    public String getDescription(){return description;}
-    public void setDescription(String description){this.description = description;}
 
     @Basic
     @Column(name = "state")
@@ -67,4 +54,19 @@ public class Hotel {
     public void setRooms(Set<Room> rooms){this.rooms = rooms;}
 
 
+    @Basic
+    @Column(name = "name")
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+
+    @Basic
+    @Column(name = "password")
+    public String getPassword(){return password;}
+    public void setPassword(String password){this.password = password;}
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public HotelInfo getHotelInfo() {return hotelInfo;}
+
+    public void setHotelInfo(HotelInfo hotelInfo) {this.hotelInfo = hotelInfo;}
 }

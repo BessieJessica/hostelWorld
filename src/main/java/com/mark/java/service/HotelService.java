@@ -11,9 +11,13 @@ import java.util.Map;
 
 public interface HotelService {
 
-    public Map<String, Object> add(String description, String city);
+    public Map<String, Object> register(String name, String password, String passwordAgain);
 
-    public Map<String, Object> edit(int id, String description, String city );
+    public Map<String, Object> login(int code, String password);
+
+    public Map<String, Object> supplyInfo(int id, String city, String description, String address);
+
+    public Map<String, Object> editInfo(int id, String city, String description, String address );
 
     public Hotel getHotelById(int id);
 
