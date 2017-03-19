@@ -1,9 +1,6 @@
 package com.mark.java.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -22,16 +19,23 @@ public class Charge {
     private Timestamp time;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "memberId")
     public int getMemberId(){return memberId;}
     public void setMemberId(int memberId){this.memberId = memberId;}
 
+    @Basic
+    @Column(name = "money")
     public int getMoney(){return money;}
     public void setMoney(int money){this.money = money;}
 
+    @Basic
+    @Column(name = "time")
     public Timestamp getTime(){return time;}
     public void setTime(Timestamp time){this.time = time;}
 }

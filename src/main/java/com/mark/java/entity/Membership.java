@@ -26,15 +26,23 @@ public class Membership {
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "memberCode")
     public int getMemberCode(){return memberCode;}
     public void setMemberCode(int memberCode){this.memberCode = memberCode;}
 
+    @Basic
+    @Column(name = "cellphone")
     public String getCellphone(){return cellphone;}
     public void setCellphone(String cellphone){this.cellphone = cellphone;}
 
+    @Basic
+    @Column(name = "password")
     public String getPassword(){return password;}
     public void setPassword(String password){this.password = password;}
 
+    @Basic
+    @Column(name = "state")
     public int getState(){return state;}
     public void setState(int state){this.state = state;}
 

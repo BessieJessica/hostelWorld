@@ -24,16 +24,23 @@ public class Room {
     private Hotel hotel;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "roomNumber")
     public String getRoomNumber(){return roomNumber;}
     public void setRoomNumber(String roomNumber){this.roomNumber = roomNumber;}
 
+    @Basic
+    @Column(name = "description")
     public String getDescription(){return description;}
     public void setDescription(String description){this.description = description;}
 
+    @Basic
+    @Column(name = "image")
     public String getImage(){return image;}
     public void setImage(String image){this.image = image;}
 

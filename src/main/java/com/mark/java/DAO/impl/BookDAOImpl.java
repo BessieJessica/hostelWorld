@@ -4,6 +4,7 @@ import com.mark.java.DAO.BookDAO;
 import com.mark.java.DAO.MembershipDAO;
 import com.mark.java.entity.Book;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +21,6 @@ public class BookDAOImpl implements BookDAO{
     private SessionFactory sessionFactory;
     @Autowired
     private MembershipDAO membershipDAO;
-
-
 
 
     @Override

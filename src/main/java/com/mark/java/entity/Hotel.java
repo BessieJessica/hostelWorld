@@ -36,15 +36,23 @@ public class Hotel {
     public int getId(){return id;}
     public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "hotelCode")
     public int getHotelCode(){return hotelCode;}
     public void setHotelCode(int hotelCode){this.hotelCode = hotelCode;}
 
+    @Basic
+    @Column(name = "city")
     public String getCity(){return city;}
     public void setCity(String city){this.city = city;}
 
+    @Basic
+    @Column(name = "description")
     public String getDescription(){return description;}
     public void setDescription(String description){this.description = description;}
 
+    @Basic
+    @Column(name = "state")
     public int getState(){return state;}
     public void setState(int state){this.state = state;}
 

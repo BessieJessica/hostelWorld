@@ -1,9 +1,6 @@
 package com.mark.java.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -13,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table
 
-public class User implements Serializable{
+public class User {
 
     private int id;
 
@@ -27,13 +24,16 @@ public class User implements Serializable{
 
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
     public int getId(){
         return id;
     }
 
-//    public void setId(int id){this.id = id;}
+    public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "username")
     public String getUsername(){
         return username;
     }
@@ -42,17 +42,22 @@ public class User implements Serializable{
         this.username = username;
     }
 
-
+    @Basic
+    @Column(name = "password")
     public String getPassword(){return password;}
 
     public void setPassword(String password){
         this.password = password;
     }
 
-    public int getRele(){return role;}
+    @Basic
+    @Column(name = "role")
+    public int getRole(){return role;}
     public void setRole(int role){this.role = role;}
 
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "hotelId")
     public Hotel getHotel() {return hotel;}
     public void setHotel(Hotel hotel){this.hotel = hotel;}
 

@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by lois on 2017/3/6.
  */
 
-@Service
+@Service("userService")
 @Transactional //指明每个方法是一个事务
 
 public class UserServiceImpl implements UserService {

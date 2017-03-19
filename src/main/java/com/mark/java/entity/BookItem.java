@@ -12,25 +12,29 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table
+@Table(name = "bookItem", schema = "J2EE")
 
 public class BookItem {
 
     private int id;
+    private Book book;
     private double price;
     private int number;
-
-    private Book book;
     private Room room;
 
     @Id
+    @Column(name = "id")
     @GeneratedValue
     public int getId() {return id;}
     public void setId(int id){this.id = id;}
 
+    @Basic
+    @Column(name = "price")
     public double getPrice(){return price;}
     public void setPrice(double price){this.price = price;}
 
+    @Basic
+    @Column(name = "number")
     public int getNumber(){return number;}
     public void setNumber(int number){this.number = number;}
 
