@@ -23,9 +23,11 @@ public interface MembershipService {
 
     public Map<String, Object> stop(int id);
 
-    public Map<String, Object> fillInfo(int id, String name);
+    public Map<String, Object> supplyInfo(int id, String name, String birthday, int gender,
+                                          String province, String city, String bank);
 
-    public Map<String, Object> editInfo(int id, String name);
+    public Map<String, Object> editInfo(int id, String name, String birthday, int gender,
+                                        String province, String city);
 
     public void stateRecheck(int id);
 

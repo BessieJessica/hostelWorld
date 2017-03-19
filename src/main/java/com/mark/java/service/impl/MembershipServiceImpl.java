@@ -33,11 +33,11 @@ public class MembershipServiceImpl implements MembershipService{
 
 
     @Override
-    public Map<String, Object> register(String cellphone, String password, String passwordSecondTime) {
+    public Map<String, Object> register(String cellphone, String password, String passwordAgain) {
         Map<String, Object> map = new HashMap<>();
         cellphone = cellphone.trim();
         password = password.trim();
-        passwordSecondTime = passwordSecondTime.trim();
+        passwordAgain = passwordAgain.trim();
 
         if(cellphone.length()==0||password.length()==0||password.length()==0){
             map.put("success",false);
@@ -45,7 +45,7 @@ public class MembershipServiceImpl implements MembershipService{
         }else if(!Utils.isMobileNumber(cellphone)){
             map.put("success",false);
             map.put("error","手机号码格式错误!");
-        }else if(!password.equals(passwordSecondTime)){
+        }else if(!password.equals(passwordAgain)){
             map.put("success",false);
             map.put("error","两次密码输入不同!");
         }else if(membershipDAO.ifMemberExists(cellphone)){
@@ -54,7 +54,7 @@ public class MembershipServiceImpl implements MembershipService{
         }else{
             Membership membership = membershipDAO.create(cellphone,password);
             map.put("success",true);
-            map.put("id",membership.getId());
+            map.put("memberId",membership.getId());
             map.put("memberName",membership.getMemberInfo().getName());
         }
 
@@ -81,7 +81,7 @@ public class MembershipServiceImpl implements MembershipService{
                     map.put("error","手机号或密码错误！");
                 }else{
                     map.put("success",true);
-                    map.put("id",membership.getId());
+                    map.put("memberId",membership.getId());
                     map.put("memberName",membership.getMemberInfo().getName());
                 }
             }
@@ -117,10 +117,10 @@ public class MembershipServiceImpl implements MembershipService{
 
         Membership membership = membershipDAO.findById(id);
         membership.getMemberAccount().setBalance(membership.getMemberAccount().getBalance()+moneyInt);
-        membership.setState(1);
+        membership.setState(1);//会员账户已激活，状态设为1
 
         Timestamp startTime = new Timestamp(System.currentTimeMillis());
-        membership.getMemberState().setStartTime(startTime);
+        membership.getMemberState().setStartTime(startTime);//设置开卡时间
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -135,14 +135,21 @@ public class MembershipServiceImpl implements MembershipService{
         VipLevel vipLevel = new VipLevel();
 
         //不同金额对应不同等级
-        //money:10000 -> 10级；money:9000 -> 9级
-        int level = moneyInt/1000;
-        if ((int) membership.getMemberAccount().getVipLevel().getLevel()<level){
+        int level = 0;
+        if (moneyInt >= 30000) level = 6;
+        else if(moneyInt >= 16000) level = 5;
+        else if (moneyInt >= 10000) level = 4;
+        else if (moneyInt >= 5000) level = 3;
+        else if (moneyInt >= 3000) level = 2;
+        else if (moneyInt >= 1000) level =1;
+        else level = 0;
+        if (membership.getMemberAccount().getVipLevel().getLevel() < level){
             vipLevel.setLevel(level);
             membership.getMemberAccount().setVipLevel(vipLevel);
         }
 
         membershipDAO.update(membership);
+        chargeDAO.create(id, moneyInt);
 
         map.put("success",true);
 
@@ -188,7 +195,7 @@ public class MembershipServiceImpl implements MembershipService{
 
         if (currentCredit < 100){
             map.put("success",false);
-            map.put("error","抱歉您的积分不足100～");
+            map.put("error","抱歉您的积分不足100，不可兑换");
             return map;
         }
 
@@ -235,7 +242,7 @@ public class MembershipServiceImpl implements MembershipService{
         Membership membership = membershipDAO.findById(id);
         if(!password.equals(membership.getPassword())){
             map.put("success",false);
-            map.put("error","密码输入有误～");
+            map.put("error","密码错误！");
             return map;
         }
 
@@ -257,8 +264,16 @@ public class MembershipServiceImpl implements MembershipService{
         membership.getMemberState().setStopTime(stopTime);
 
         VipLevel vipLevel = new VipLevel();
-        int level = money/1000;
-        if(membership.getMemberAccount().getVipLevel().getLevel()<level){
+        int level = 0;
+        if (money >= 30000) level = 6;
+        if (money >= 30000) level = 6;
+        else if(money >= 16000) level = 5;
+        else if (money >= 10000) level = 4;
+        else if (money >= 5000) level = 3;
+        else if (money >= 3000) level = 2;
+        else if (money >= 1000) level =1;
+        else level = 0;
+        if (membership.getMemberAccount().getVipLevel().getLevel() < level){
             vipLevel.setLevel(level);
             membership.getMemberAccount().setVipLevel(vipLevel);
         }
@@ -283,12 +298,18 @@ public class MembershipServiceImpl implements MembershipService{
     }
 
     @Override
-    public Map<String, Object> fillInfo(int id, String name) {
+    public Map<String, Object> supplyInfo(int id, String name, String birthday, int gender,
+                                          String province, String city, String bank) {
         Map<String, Object> map = new HashMap<>();
 
         name = name.trim();
+        birthday = birthday.trim();
+        province = province.trim();
+        city = city.trim();
+        bank = bank.trim();
 
-        if(name.length()==0){
+        if(name.length()==0||birthday.length()==0||province.length()==0||
+                city.length()==0||bank.length()==0){
             map.put("success",false);
             map.put("error","信息不完整！");
             return map;
@@ -296,6 +317,17 @@ public class MembershipServiceImpl implements MembershipService{
 
         Membership membership = membershipDAO.findById(id);
         membership.getMemberInfo().setName(name);
+        try {
+            membership.getMemberInfo().setBirthday(java.sql.Date.valueOf(birthday));
+        }catch (Exception e){
+            map.put("success",false);
+            map.put("error","生日格式不正确！");
+            return map;
+        }
+        membership.getMemberInfo().setGender(gender);
+        membership.getMemberInfo().setCity(city);
+        membership.getMemberInfo().setProvince(province);
+        membership.getMemberAccount().setBankId(bank);
         membershipDAO.update(membership);
         map.put("success",true);
         map.put("memberName",membership.getMemberInfo().getName());
@@ -304,10 +336,16 @@ public class MembershipServiceImpl implements MembershipService{
     }
 
     @Override
-    public Map<String, Object> editInfo(int id, String name) {
+    public Map<String, Object> editInfo(int id, String name, String birthday, int gender,
+                                        String province, String city) {
         Map<String, Object> map = new HashMap<>();
         Membership membership = membershipDAO.findById(id);
         membership.getMemberInfo().setName(name);
+        membership.getMemberInfo().setBirthday(java.sql.Date.valueOf(birthday));
+        membership.getMemberInfo().setProvince(province);
+        membership.getMemberInfo().setCity(city);
+        membership.getMemberInfo().setGender(gender);
+
         membershipDAO.update(membership);
         map.put("success",true);
 

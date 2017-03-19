@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class MemberAccount {
 
     private int memberId;
-    private int bankId;
+    private String bankId;
     private double balance;
     private int credit;
     private VipLevel vipLevel;
@@ -25,8 +25,8 @@ public class MemberAccount {
 
     @Basic
     @Column(name = "bankId")
-    public int getBankId(){return bankId;}
-    public void setBankId(int bankId){this.bankId = bankId;}
+    public String getBankId(){return bankId;}
+    public void setBankId(String bankId){this.bankId = bankId;}
 
     @Basic
     @Column(name = "balance")

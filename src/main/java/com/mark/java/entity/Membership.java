@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table
+@Table(name = "member", schema = "J2EE")
 
 public class Membership {
     private int id;

@@ -1,7 +1,7 @@
 package com.mark.java.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by lois on 2017/3/13.

@@ -30,18 +30,18 @@ public class MembershipDAOImpl implements MembershipDAO {
          * 生成注册码
          */
         boolean flag = false;
-        int memberId;
+        int memberCode;
         do{
-            memberId = Utils.generateCode();
-            SQLQuery query = session.createSQLQuery("SELECT memberId from member where memberId = ?");
-            query.setInteger(0,memberId);
+            memberCode = Utils.generateCode();
+            SQLQuery query = session.createSQLQuery("SELECT memberCode from member where memberCode = ?");
+            query.setInteger(0,memberCode);
             if(query.uniqueResult()==null){
                 flag = true;
             }
         }while(!flag);
 
         Membership membership = new Membership();
-        membership.setMemberCode(memberId);
+        membership.setMemberCode(memberCode);
         membership.setCellphone(cellphone);
         membership.setPassword(password);
         membership.setState(0);
@@ -50,7 +50,7 @@ public class MembershipDAOImpl implements MembershipDAO {
         session.flush();
 
         MemberAccount account = new MemberAccount();
-        account.setMemberId(membership.getMemberCode());
+        account.setMemberId(membership.getId());
         account.setCredit(0);
         account.setBalance(0);
         VipLevel vipLevel = (VipLevel)session.get(VipLevel.class,0);
@@ -58,11 +58,11 @@ public class MembershipDAOImpl implements MembershipDAO {
         membership.setMemberAccount(account);
 
         MemberState memberState = new MemberState();
-        memberState.setMemberId(membership.getMemberCode());
+        memberState.setMemberId(membership.getId());
         membership.setMemberState(memberState);
 
         MemberInfo memberInfo = new MemberInfo();
-        memberInfo.setMemberId(membership.getMemberCode());
+        memberInfo.setMemberId(membership.getId());
         membership.setMemberInfo(memberInfo);
 
         session.flush();
@@ -86,7 +86,7 @@ public class MembershipDAOImpl implements MembershipDAO {
     public Membership findByMemberCode(int memberCode){
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery("from member where memberId =: memberId");
+        Query query = session.createQuery("from member where memberCode =: memberCode");
         query.setInteger("memberCode", memberCode);
         if (query.list()==null||query.list().size()==0){
             return null;

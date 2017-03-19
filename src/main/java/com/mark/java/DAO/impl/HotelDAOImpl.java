@@ -34,7 +34,7 @@ public class HotelDAOImpl implements HotelDAO {
         int hotelCode;
         do{
             hotelCode = Utils.generateCode();
-            SQLQuery query = session.createSQLQuery("select hotelId from hotel where hotelId = ?");
+            SQLQuery query = session.createSQLQuery("select hotelCode from hotel where hotelCode = ?");
             query.setInteger(0,hotelCode);
             if (query.uniqueResult()==null){
                 flag = true;
@@ -45,6 +45,7 @@ public class HotelDAOImpl implements HotelDAO {
         hotel.setHotelCode(hotelCode);
         hotel.setCity(city);
         hotel.setDescription(description);
+        hotel.setState(0);//注册客栈，状态设为0
         session.save(hotel);
 
         session.flush();

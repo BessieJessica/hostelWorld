@@ -25,7 +25,7 @@ public class Hotel {
 
     private String description;
 
-    private int state; //待审批／通过／拒绝
+    private int state; //初始注册状态0／待审批1／通过2／拒绝3
 
     private Set<User> users;
     private Set<Room> rooms;
