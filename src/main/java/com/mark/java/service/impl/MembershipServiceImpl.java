@@ -7,6 +7,8 @@ package com.mark.java.service.impl;
 import com.mark.java.DAO.ChargeDAO;
 import com.mark.java.DAO.CreditDAO;
 import com.mark.java.DAO.MembershipDAO;
+import com.mark.java.entity.Charge;
+import com.mark.java.entity.Credit;
 import com.mark.java.entity.Membership;
 import com.mark.java.entity.VipLevel;
 import com.mark.java.service.MembershipService;
@@ -15,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 
@@ -406,6 +405,16 @@ public class MembershipServiceImpl implements MembershipService{
         return membershipDAO.findByMemberCode(memberCode);
     }
 
+    @Override
+    public List<Credit> getCreditsByMember(int id) {
+
+        return creditDAO.findByMemberId(id);
+    }
+
+    @Override
+    public List<Charge> getChargeByMember(int id) {
+        return chargeDAO.findByMemberId(id);
+    }
 
 
 }

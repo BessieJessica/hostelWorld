@@ -1,6 +1,3 @@
-/**
- * Created by lois on 2017/3/19.
- */
 $(document).ready(function () {
     adminLightItem();
     datePicker();
@@ -95,20 +92,19 @@ Date.prototype.Format = function(fmt) {
     return fmt;
 };
 
-function hotelStateTranslate(num) {
-    switch (num){
+function planStatusTranslate(num) {
+    switch (num) {
         case 0: return '未审批';
         case 1: return '已批准';
         case 2: return '不批准';
     }
 }
 
-
 function navbarLeftItems() {
 
     var shopList;
 
-    $("#js-navbar-shop-select").text("选择酒店： " + window.localStorage.getItem("shopName"));
+    $("#js-navbar-shop-select").text("选择门店： " + window.localStorage.getItem("shopName"));
 
     $.ajax({
         type: "POST",
@@ -153,9 +149,8 @@ function navbarLeftItems() {
     });
 }
 
-
-function getMemberStatus(state) {
-    switch (state) {
+function getCustomerStatus(status) {
+    switch (status) {
         case 0: return '未激活';
         case 1: return '有效';
         case 2: return '已暂停';

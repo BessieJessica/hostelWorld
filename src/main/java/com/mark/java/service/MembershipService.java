@@ -1,7 +1,10 @@
 package com.mark.java.service;
 
+import com.mark.java.entity.Charge;
+import com.mark.java.entity.Credit;
 import com.mark.java.entity.Membership;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,15 +38,9 @@ public interface MembershipService {
 
     public Membership getMembershipByMemberCode(int memberCode);
 
+    public List<Credit> getCreditsByMember(int id);
 
-    /**
-     *
+    public List<Charge> getChargeByMember(int id);
 
-     ----------------------------------------------------------------
-     public List<Point> getPointsByCustomer(int id);
-
-     public List<Payment> getPaymentsByCustomer(int id);
-     ------------------------------------------------------------
-     */
 
 }
